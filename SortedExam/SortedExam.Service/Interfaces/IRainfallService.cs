@@ -4,6 +4,6 @@ namespace SortedExam.Service.Interfaces
 {
     public interface IRainfallService
     {
-        Task<RainfallReadingResponse> GetStationReadingAsync(string stationId, int? count = 10);
+        Task<RainfallReadingResponse> GetStationReadingAsync(string stationId, int count);
     }
 }

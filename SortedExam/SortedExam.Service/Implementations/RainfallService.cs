@@ -1,4 +1,5 @@
-﻿using SortedExam.Model.App.Locals;
+﻿using SortedExam.Model.App.Exceptions;
+using SortedExam.Model.App.Locals;
 using SortedExam.Model.App.Responses;
 using SortedExam.Model.Service.Rainfall;
 using SortedExam.Service.Interfaces;
@@ -15,20 +16,19 @@ namespace SortedExam.Service.Implementations
             _rainfallClient = httpClientFactory.CreateClient(Constants.RAINFALL_CLIENT);
         }
 
-        public async Task<RainfallReadingResponse> GetStationReadingAsync(string stationId, int? count = 10)
+        public async Task<RainfallReadingResponse> GetStationReadingAsync(string stationId, int count)
         {
             HttpResponseMessage? response = null;
             try
             {
-                var stationReadingUrl = $"/flood-monitoring/id/stations/{stationId}/readings";
-                if (count != null)
-                    stationReadingUrl += $"?_limit={count}";
+                var stationReadingUrl = $"/flood-monitoring/id/stations/{stationId}/readings?_limit={count}";
+
                 response = await _rainfallClient.GetAsync(stationReadingUrl);
                 if (response.IsSuccessStatusCode)
                 {
                     var returnValue = await response.Content.ReadFromJsonAsync<StationReading>();
-                    if (returnValue == null)
-                        throw new Exception($"StationId does not have readings.");
+                    if (returnValue == null || returnValue.items.Count == 0)
+                        throw new NoRecordFoundException($"StationId does not have readings.");
 
                     List<RainfallReading> stations = new List<RainfallReading>();
                     returnValue.items.ForEach(item =>

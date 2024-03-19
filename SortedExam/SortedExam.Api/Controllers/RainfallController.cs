@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SortedExam.Model.App.Exceptions;
+using SortedExam.Model.App.Locals;
 using SortedExam.Model.App.Responses;
 using SortedExam.Service.Interfaces;
+using SortedExam.Service.Validations;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SortedExam.Api.Controllers
 {
-    /// <summary>
-    /// Operations relating to rainfall
-    /// </summary>
     [Route("[controller]")]
     [ApiController]
+    [SwaggerTag("Operations relating to rainfall")]
     public class RainfallController : ControllerBase
     {
         private readonly IRainfallService _rainfallService;
@@ -34,10 +35,27 @@ namespace SortedExam.Api.Controllers
         public async Task<IActionResult> GetAllStationReadingAsync(
             [SwaggerParameter("The id of the reading station")]
             string stationId,
-             [SwaggerParameter("The number of readings to return")]
-            int? count = 10)
+            [SwaggerParameter("The number of readings to return")]
+            [CountRange(1, 100)]
+            int count = 10)
         {
-            return Ok(await _rainfallService.GetStationReadingAsync(stationId, count));
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                return BadRequest(new ErrorResponse("Validation Error", Enumerable.Empty<ErrorDetail>()));
+            }
+
+            try
+            {
+                return Ok(await _rainfallService.GetStationReadingAsync(stationId, count));
+            }
+            catch (Exception ex)
+            {
+                if (ex is NoRecordFoundException)
+                    return NotFound(new ErrorResponse(ex.Message, Enumerable.Empty<ErrorDetail>()));
+
+                return StatusCode(500, new ErrorResponse(ex.Message, Enumerable.Empty<ErrorDetail>()));
+            }
         }
     }
 }
