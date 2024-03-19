@@ -1,10 +1,16 @@
 using Microsoft.OpenApi.Models;
+using SortedExam.Model.App.Shared;
+using SortedExam.Service;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configurationOption = new ConfigurationOption();
+builder.Configuration.Bind("ConfigurationOption", configurationOption); 
+builder.Services.AddSingleton(configurationOption);
 
 builder.Services.AddControllers();
+builder.Services.AddCoreServices(configurationOption);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo

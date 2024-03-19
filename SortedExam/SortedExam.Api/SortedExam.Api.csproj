@@ -13,7 +13,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\SortedExam.Model.App\SortedExam.Model.App.csproj" />
-		<ProjectReference Include="..\SortedExam.Model.Service\SortedExam.Model.Service.csproj" />
+		<ProjectReference Include="..\SortedExam.Service\SortedExam.Service.csproj" />
 	</ItemGroup>
 
 </Project>

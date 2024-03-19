@@ -1,5 +1,8 @@
 ﻿namespace SortedExam.Model.App.Locals
 {
+    /// <summary>
+    /// Details of a rainfall reading
+    /// </summary>
     public class RainfallReading
     {
         public DateTime DateMeasured { get; }
