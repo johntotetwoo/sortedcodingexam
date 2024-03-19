@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SortedExam.Model.App.Responses;
 using SortedExam.Service.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SortedExam.Api.Controllers
 {
@@ -23,16 +24,18 @@ namespace SortedExam.Api.Controllers
             _rainfallService = rainfallService ?? throw new ArgumentNullException(nameof(rainfallService));
         }
 
-        /// <summary>
-        /// Retrieve the latest readings for the specified stationId
-        /// </summary>
-        /// <param name="stationId">The id of the reading station</param>
-        /// <param name="count">The number of readings to return</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        [SwaggerOperation(Summary = "Get rainfall readings by station Id", Description = "Retrieve the latest readings for the specified stationId", Tags = new[] { "Rainfall" })]
+        [SwaggerResponse(200, "OK", typeof(RainfallReadingResponse), Description = "A list of rainfall readings successfully retrieved")]
+        [SwaggerResponse(400, "BadRequest", typeof(ErrorResponse), Description = "Invalid request")]
+        [SwaggerResponse(404, "NotFound", typeof(ErrorResponse), Description = "No readings found for the specified stationId")]
+        [SwaggerResponse(500, "InternalServerError", typeof(ErrorResponse), Description = "Internal server error")]
+        [Produces("application/json")]
         [HttpGet("id/{stationId}/readings")]
-        [ProducesResponseType(typeof(RainfallReadingResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<RainfallReadingResponse>> GetAllStationReadingAsync(string stationId, int? count = 10)
+        public async Task<IActionResult> GetAllStationReadingAsync(
+            [SwaggerParameter("The id of the reading station")]
+            string stationId,
+             [SwaggerParameter("The number of readings to return")]
+            int? count = 10)
         {
             return Ok(await _rainfallService.GetStationReadingAsync(stationId, count));
         }

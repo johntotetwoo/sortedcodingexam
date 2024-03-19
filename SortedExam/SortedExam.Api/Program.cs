@@ -1,7 +1,7 @@
 using Microsoft.OpenApi.Models;
+using SortedExam.Api.Filters;
 using SortedExam.Model.App.Shared;
 using SortedExam.Service;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,12 +23,9 @@ builder.Services.AddSwaggerGen(c => {
             Url = new Uri("https://www.sorted.com")
         }
     });
-
     c.AddServer(new OpenApiServer { Url = "https://localhost:3000", Description = "Rainfall Api" });
-
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath, true);
+    c.OperationFilter<SwaggerOperationFilter>();
+    c.EnableAnnotations();
 });
 
 var app = builder.Build();
