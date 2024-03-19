@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/SortedExam/.vs/SortedExam
+/SortedExam/SortedExam.Api/bin/Debug/net6.0
+/SortedExam/SortedExam.Api/obj
+*.user
+/SortedExam/SortedExam.Model.App/bin/Debug/net6.0
+/SortedExam/SortedExam.Model.App/obj
+/SortedExam/SortedExam.Model.Service/bin/Debug/net6.0
+/SortedExam/SortedExam.Model.Service/obj
+/SortedExam/SortedExam.Service/bin/Debug/net6.0
+/SortedExam/SortedExam.Service/obj
