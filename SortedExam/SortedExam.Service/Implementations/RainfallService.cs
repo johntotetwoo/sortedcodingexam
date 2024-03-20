@@ -40,7 +40,7 @@ namespace SortedExam.Service.Implementations
                 }
                 else
                 {
-                    throw new Exception($"{response.StatusCode}: Unknown error occurred");
+                    throw new UnsuccessfulRequestException($"{response.StatusCode}: Request is not successful.");
                 }
             }
             catch (Exception)

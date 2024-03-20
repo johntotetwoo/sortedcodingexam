@@ -54,6 +54,9 @@ namespace SortedExam.Api.Controllers
                 if (ex is NoRecordFoundException)
                     return NotFound(new ErrorResponse(ex.Message, Enumerable.Empty<ErrorDetail>()));
 
+                if (ex is UnsuccessfulRequestException)
+                    return BadRequest(new ErrorResponse(ex.Message, Enumerable.Empty<ErrorDetail>()));
+
                 return StatusCode(500, new ErrorResponse(ex.Message, Enumerable.Empty<ErrorDetail>()));
             }
         }

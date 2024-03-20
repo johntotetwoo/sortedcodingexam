@@ -12,3 +12,7 @@
 /SortedExam/SortedExam.Model.Service/obj
 /SortedExam/SortedExam.Service/bin/Debug/net6.0
 /SortedExam/SortedExam.Service/obj
+/SortedExam/.vs/ProjectEvaluation
+/SortedExam/SortedExam.Test/bin/Debug/net6.0
+/SortedExam/SortedExam.Test/obj
+/SortedExam/TestResults
